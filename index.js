@@ -1,4 +1,4 @@
-//server/index.js
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,8 +6,6 @@ const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-// Replace 'YOUR_MONGODB_URI' with your actual MongoDB connection URI
 
 mongoose
    .connect('mongodb://127.0.0.1:27017/weatherapp').then(() => console.log("connected to mongo")).catch((err) => console.error(err))
@@ -26,6 +24,10 @@ const weatherSchema = new mongoose.Schema({
 // Create a Mongoose model for weather data
 let Weather=mongoose.model("Weather",weatherSchema);
 
+app.get('/api',async(req,res)=>{
+   const weather=await Weather.find();
+   res.json(weather);
+});
 
 // Route to handle storing weather data
 app.post('/api/weather', async (req, res) => {
